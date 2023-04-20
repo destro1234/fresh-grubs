@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   # Leave this here to help deploy your app later!
   get "*path", to: "fallback#index", constraints: ->(req) { !req.xhr? && req.format.html? }
 
-  resources :user
+  resources :users
 
 
   post "/login", to: "sessions#create"
