@@ -2,14 +2,12 @@ import React, { useContext} from 'react'
 import Welcome from './components/Welcome.js'
 import './App.css';
 import  {UserContext}  from './context/user.js'
+import Menu from './components/Menu.js'
 
 
 function App() {
 
   const {currentUser, setCurrentUser } = useContext(UserContext)
-  // return (
-    // <div className="App">
-    //   <Welcome />
 
     function logOut() {
       fetch("/logout", {
@@ -22,7 +20,7 @@ function App() {
       if (currentUser) {
     return ( <React.Fragment>
       <h2>Welcome, {currentUser.username}!</h2>
-      
+      <Menu />
       <button onClick={logOut}>LogOut</button>
       </React.Fragment>);
   } else {
