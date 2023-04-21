@@ -16,8 +16,10 @@ function App() {
         setCurrentUser(null)
       });
      }
-      
+     
+     console.log(currentUser)
       if (currentUser) {
+       
     return ( <React.Fragment>
       <h2>Welcome, {currentUser.username}!</h2>
       <Menu />

@@ -14,8 +14,12 @@ function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({}),
-      })
+        body: JSON.stringify({ username, password}),
+      }).then((r) => {
+        if (r.ok) {
+          r.json().then((user) => setCurrentUser(user));
+        }
+      });
     }
 
     function onSignup(e) {

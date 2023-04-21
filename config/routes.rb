@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
   
+  get 'items/create'
+  get 'items/show'
+  get 'items/index'
+  get 'items/destroy'
+  get 'items/update'
   get 'sessions/create'
   get 'users/show'
   # Routing logic: fallback requests for React Router.
