@@ -28,7 +28,8 @@ function Menu () {
 
     function handleNewOrder(event) {
         console.log(event)
-        fetch("/orders", {
+        console.log(currentUser)
+        fetch(`users/${currentUser.id}/orders`, {
             method: "POST",
             headers: {"Content-Type" : "application/json"},
             body: JSON.stringify({total: 0, user_id: currentUser.id})

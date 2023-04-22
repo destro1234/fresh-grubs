@@ -1,3 +1,3 @@
 class OrderSerializer < ActiveModel::Serializer
-  attributes :total, :user
+  attributes :total, :user, :items
 end

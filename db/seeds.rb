@@ -6,9 +6,9 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-user1= User.create(username: "destro", password_digest:"YODA")
-user2= User.create(username: "Nat", password_digest: "Vent")
-user3= User.create(username: "Chris", password_digest: "Christmas")
+user1= User.create(username: "destro", password:"YODA")
+user2= User.create(username: "Nat", password: "Vent")
+user3= User.create(username: "Chris", password: "Christmas")
 
 item1 = Item.create(name: "pork buns", price: 5.99)
 item2 = Item.create(name: "scallion pancakes", price: 7.99)
