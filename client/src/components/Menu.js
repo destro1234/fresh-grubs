@@ -33,7 +33,8 @@ function Menu () {
             headers: {"Content-Type" : "application/json"},
             body: JSON.stringify({total: 0, user_id: currentUser.id})
         })
-        .then(r => console.log(r))
+        .then(r => r.json())
+        .then(data => console.log(data))
     }
 
 
