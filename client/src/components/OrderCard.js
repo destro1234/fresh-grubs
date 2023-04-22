@@ -11,8 +11,8 @@ function OrderCard({order}) {
 
             {console.log(order.items)}
 
-            <label for="total">Total:</label>
-            <h2 name="total">{order.total}</h2>
+            <label>Total:</label>
+            <h2>{order.total}</h2>
 
             <button>Change Order</button>
             <button>Cancel Order</button>

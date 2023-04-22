@@ -18,7 +18,6 @@ class OrdersController < ApplicationController
     
         def create
             order = Order.create!(order_params)
-            byebug
             render json: order, include: :items
         rescue ActiveRecord::RecordInvalid => e
             render json: { errors: e.record.errors.full_messages }, status: :unprocessable_entity

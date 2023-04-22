@@ -12,6 +12,7 @@ function UserProvider({ children }) {
     // this value will be available to child components of this provider
 
   const [currentUser, setCurrentUser ] = useState(null)
+  const [errors, setErrors] = useState([])
 
     useEffect(() => {
       fetch("/me").then((response) => {

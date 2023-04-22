@@ -7,6 +7,7 @@ function Menu () {
 
     const [items, setItems] = useState([])
     const { currentUser, setCurrentUser } = useContext(UserContext)
+    const { errors, setErrors } = useContext(UserContext)
 
     useEffect(() => {
         fetch('/items')
@@ -21,21 +22,52 @@ function Menu () {
 
     }
 
-    function handleAddItem(event) {
-        console.log(event)
+    function addOrder (order) {
+        console.log(order)
+        
+        let newUser = {...currentUser}
+        
+        console.log(currentUser.orders)
+    //     // let newTest = {winner: prediction.winner, reason: prediction.reason, game_description: `${prediction.game.home_team} vs. ${prediction.game.away_team}`, prediction: prediction}
+       if (currentUser.orders) {
+        newUser.orders = [...currentUser.orders, order]
+    //     // newUser.test = [...currentUser.test, newTest]
+       }
 
+       else {
+            newUser.orders = [order]
+    //         // newUser.test = [newTest]
+       }
+       setCurrentUser(newUser)          
     }
 
-    function handleNewOrder(event) {
-        console.log(event)
-        console.log(currentUser)
-        fetch(`users/${currentUser.id}/orders`, {
+    
+
+    async function handleNewOrder(event) {
+        
+        event.preventDefault()
+
+        const response = await fetch(`users/${currentUser.id}/orders`, {
             method: "POST",
             headers: {"Content-Type" : "application/json"},
             body: JSON.stringify({total: 0, user_id: currentUser.id})
         })
-        .then(r => r.json())
-        .then(data => console.log(data))
+         const data = await response.json();
+        
+            
+            if (response.ok) {
+               
+                addOrder(data)
+                // setClicked(!clicked)
+                
+            }
+
+            else {
+                setErrors(data.errors)
+            }
+            
+        
+        
     }
 
 
@@ -49,7 +81,7 @@ function Menu () {
                { items.map((item) => {
                 return (
                     <React.Fragment><li>{item.name} - ${item.price} </li>
-                    <button onClick={handleAddItem}>Add to order</button>
+                    <button>Add to order</button>
                     </React.Fragment>
                 
                 )
