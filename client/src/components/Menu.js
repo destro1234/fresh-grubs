@@ -1,11 +1,12 @@
-import React, {useState, useEffect} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import Login from './Login.js'
-import { Link, Route, Routes } from "react-router-dom"
+import {UserContext} from '../context/user.js'
 
 
 function Menu () {
 
     const [items, setItems] = useState([])
+    const { currentUser, setCurrentUser } = useContext(UserContext)
 
     useEffect(() => {
         fetch('/items')
@@ -15,12 +16,26 @@ function Menu () {
 
     console.log(items)
 
-    function viewOrder() {
-        return(
-            <Link to={"/"}/>
-        )
+    function viewOrder(event) {
+        console.log(event)
 
     }
+
+    function handleAddItem(event) {
+        console.log(event)
+
+    }
+
+    function handleNewOrder(event) {
+        console.log(event)
+        fetch("/orders", {
+            method: "POST",
+            headers: {"Content-Type" : "application/json"},
+            body: JSON.stringify({total: 0, user_id: currentUser.id})
+        })
+        .then(r => console.log(r))
+    }
+
 
 
     return (
@@ -32,7 +47,7 @@ function Menu () {
                { items.map((item) => {
                 return (
                     <React.Fragment><li>{item.name} - ${item.price} </li>
-                    <button>Add to order</button>
+                    <button onClick={handleAddItem}>Add to order</button>
                     </React.Fragment>
                 
                 )
@@ -40,20 +55,9 @@ function Menu () {
 
             </ol>
 
+            <button onClick={handleNewOrder}>Start new order!</button>
+
             <button onClick={viewOrder}>View current order!</button>
-
-            {/* <Routes> */}
-        {/* <Route path="/flipped">
-        </Route> */}
-
-        {/* <Route path="/closet">
-        
-        </Route> */}
-
-        {/* <Route path="/" element={<Login />}>
-
-        </Route>
-      </Routes> */}
         </div>
     )
 }

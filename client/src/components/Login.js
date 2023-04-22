@@ -48,7 +48,6 @@ function Login() {
   
     return (
       <form onSubmit={handleSubmit}>
-        <h3>Login With Username</h3>
         <label htmlFor="username">Username: </label>
         <input
           type="text"

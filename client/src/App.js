@@ -17,10 +17,12 @@ function App() {
       });
      }
      
-     console.log(currentUser)
+     
       if (currentUser) {
        
-    return ( <React.Fragment>
+    return ( 
+    
+    <React.Fragment>
       <h2>Welcome, {currentUser.username}!</h2>
       <Menu />
       <button onClick={logOut}>LogOut</button>
@@ -32,8 +34,7 @@ function App() {
     </React.Fragment>
     );
   }
-    // </div>
-  // );
+
 }
 
 export default App;
