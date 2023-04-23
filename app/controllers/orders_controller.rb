@@ -47,7 +47,7 @@ class OrdersController < ApplicationController
     
     
             order = Order.find_by(id: params[:id])
-            order.update(predictions_params) if order.user == user
+            order.update(order_params) if order.user == user
             render json: order
         end
         
