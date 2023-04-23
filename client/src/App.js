@@ -1,4 +1,4 @@
-import React, { useContext} from 'react'
+import React, { useState, useContext} from 'react'
 import Welcome from './components/Welcome.js'
 import './App.css';
 import  {UserContext}  from './context/user.js'
@@ -9,6 +9,7 @@ import OrdersLog from './components/OrdersLog.js'
 function App() {
 
   const {currentUser, setCurrentUser } = useContext(UserContext)
+ 
 
     function logOut() {
       fetch("/logout", {
@@ -17,6 +18,11 @@ function App() {
         setCurrentUser(null)
       });
      }
+
+     
+
+
+   
      
      
       if (currentUser) {
@@ -26,6 +32,10 @@ function App() {
     <React.Fragment>
       <h2>Welcome, {currentUser.username}!</h2>
       <Menu />
+
+      
+
+            
 
       {currentUser.orders ? <OrdersLog /> : null }
 

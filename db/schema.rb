@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(version: 2023_04_20_220803) do
   end
 
   create_table "orders", force: :cascade do |t|
+    t.string "address"
+    t.string "customer"
     t.integer "total"
     t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false

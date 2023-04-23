@@ -57,7 +57,7 @@ class OrdersController < ApplicationController
         private
     
         def order_params
-            params.permit(:total, :user_id)
+            params.permit(:address, :customer, :total, :user_id, :items)
         end
     
         def record_not_found(exception)

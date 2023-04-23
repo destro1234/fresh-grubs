@@ -28,7 +28,7 @@ function UserProvider({ children }) {
 
 
 
-    return <UserContext.Provider value={{currentUser, setCurrentUser}}>{children}</UserContext.Provider>;
+    return <UserContext.Provider value={{currentUser, setCurrentUser, errors, setErrors}}>{children}</UserContext.Provider>;
   }
 
   export { UserContext, UserProvider };

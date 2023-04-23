@@ -1,13 +1,16 @@
 import React, {useContext, useState, useEffect} from 'react'
 import Login from './Login.js'
+import OrderForm from './OrderForm.js'
 import {UserContext} from '../context/user.js'
 
 
 function Menu () {
 
     const [items, setItems] = useState([])
+    const [address, setAddress] = useState(null)
+    const [customer, setCustomer] = useState(null)
     const { currentUser, setCurrentUser } = useContext(UserContext)
-    const { errors, setErrors } = useContext(UserContext)
+    const [clicked, setClicked] = useState(false)
 
     useEffect(() => {
         fetch('/items')
@@ -15,19 +18,19 @@ function Menu () {
         .then( data => setItems(data))
     }, [])
 
-    console.log(items)
 
     function viewOrder(event) {
-        console.log(event)
+        
 
     }
 
-    function addOrder (order) {
-        console.log(order)
+    function handleClick () {
+        setClicked(!clicked)
+      }
+      
+      function addOrder (order) {
         
         let newUser = {...currentUser}
-        
-        console.log(currentUser.orders)
     //     // let newTest = {winner: prediction.winner, reason: prediction.reason, game_description: `${prediction.game.home_team} vs. ${prediction.game.away_team}`, prediction: prediction}
        if (currentUser.orders) {
         newUser.orders = [...currentUser.orders, order]
@@ -38,37 +41,11 @@ function Menu () {
             newUser.orders = [order]
     //         // newUser.test = [newTest]
        }
-       setCurrentUser(newUser)          
+       setCurrentUser(newUser)         
     }
 
     
 
-    async function handleNewOrder(event) {
-        
-        event.preventDefault()
-
-        const response = await fetch(`users/${currentUser.id}/orders`, {
-            method: "POST",
-            headers: {"Content-Type" : "application/json"},
-            body: JSON.stringify({total: 0, user_id: currentUser.id})
-        })
-         const data = await response.json();
-        
-            
-            if (response.ok) {
-               
-                addOrder(data)
-                // setClicked(!clicked)
-                
-            }
-
-            else {
-                setErrors(data.errors)
-            }
-            
-        
-        
-    }
 
 
 
@@ -89,9 +66,11 @@ function Menu () {
 
             </ol>
 
-            <button onClick={handleNewOrder}>Start new order!</button>
+            <button onClick={handleClick}>Start new order!</button>
 
-            <button onClick={viewOrder}>View current order!</button>
+            <button>View current order!</button>
+
+            { clicked ?  <OrderForm addOrder={addOrder} /> : null}
         </div>
     )
 }

@@ -5,10 +5,15 @@ import OrderCard from './OrderCard.js'
 
 function OrdersLog() {
     const {currentUser, setCurrentUser} = useContext(UserContext)
+
+   
+
     return (
         <div>
             <h1>These are your orders!</h1>
+            
             {currentUser.orders.map((order) => {
+                console.log(order.test)
                 return (
                     <OrderCard order={order}/>
                 )
