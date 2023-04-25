@@ -34,7 +34,7 @@ function OrderForm ({ addOrder }) {
             if (response.ok) {
                 
                 addOrder(data)
-                // setClicked(!clicked)
+
                 
             }
 
@@ -48,12 +48,8 @@ function OrderForm ({ addOrder }) {
     }
 
     function handleAddQuantity(index) {
-        // Get a copy of the newOrderItems array
         const newOrderItemsCopy = [...newOrderItems];
-        // Increment the quantity of the selected item
         newOrderItemsCopy[index].quantity++;
-        // Update the state with the new array
-        
         setNewOrderItems(newOrderItemsCopy);
 
       }
@@ -61,16 +57,13 @@ function OrderForm ({ addOrder }) {
    
     
     function handleRemoveQuantity(index) {
-        // Get a copy of the newOrderItems array
+        
         const newOrderItemsCopy = [...newOrderItems];
-        // Increment the quantity of the selected item
         if (newOrderItemsCopy[index].quantity > 0) {
             newOrderItemsCopy[index].quantity--;
           } else {
             return;
           }
-        
-        // Update the state with the new array
         
         setNewOrderItems(newOrderItemsCopy);
 
@@ -96,7 +89,7 @@ function OrderForm ({ addOrder }) {
 
             { newOrderItems.map((oi, index) => {
                 if (oi) {
-                    const itemTotalPrice = oi.price * oi.quantity; // Calculate total price for this item
+                    const itemTotalPrice = oi.price * oi.quantity;
 
                     return (
                         <ul key={index}>
