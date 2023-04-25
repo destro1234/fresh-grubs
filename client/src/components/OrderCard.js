@@ -1,20 +1,57 @@
-import React, {useState, useContext} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import {UserContext} from '../context/user.js'
 import EditOrderForm from './EditOrderForm.js'
+import ItemCard from './ItemCard.js'
 
 
 
-function OrderCard({order}) {
+function OrderCard({order }) {
 
+    
     const { currentUser, setCurrentUser } = useContext(UserContext)
+    const { currentOrder, setCurrentOrder} = useContext(UserContext)
+    const {newOrderItems, setNewOrderItems } = useContext(UserContext)
     const [ editClicked, setEditClicked] = useState(false)
     const [winner, setWinner] = useState("")
     const [reason, setReason] = useState("")
+    console.log(currentOrder)
+
+    
+    
+
+    useEffect(() => {
+        let updatedOrderItems = newOrderItems.map(item => {
+            return {
+                ...item,
+                order_id: order.id
+            };
+        }
+            )
+            console.log(updatedOrderItems)
+
+        fetch(`users/${currentUser.id}/orders/${order.id}`, {
+            method: "PATCH",
+            headers: {"Content-Type" : "application/json"},
+            body: JSON.stringify({
+                
+                    order_items: [
+                        {order_id: 1,
+                         items_id: 1,
+                         quantity: 1
+                        }
+                    ]
+            }
+                )
+            
+        }).then(res => res.json())
+        .then(data => {console.log(data)})
+    }, [newOrderItems, setNewOrderItems])
+
+    console.log(currentUser)
 
 
     function handleDelete(event) {
-        console.log(event)
-        console.log(order)
+        
         fetch(`users/${currentUser.id}/orders/${order.id}`, {
                     method: 'DELETE',
                 })
@@ -37,8 +74,9 @@ function OrderCard({order}) {
     }
 
     function editOrder(data) {
+        
         let filteredOrders = currentUser.orders.filter( (o) => o.id !== order.id )
-        console.log(filteredOrders)
+
         // let filteredTest = currentUser.test.filter((test) => { return test.prediction.id !== p.id })
         // let editedTest = {winner: p.winner, reason: p.reason, game_description: `${p.game.home_team} vs. ${p.game.away_team}`, prediction: p}
 
@@ -59,30 +97,25 @@ function OrderCard({order}) {
 
     function showEditForm() {
         setEditClicked(!editClicked)
+        setCurrentOrder(order)
     }
-
-    // function handleUpdate (event) {
-    //     event.preventDefault()
-    //     fetch(`users/${currentUser.id}/predictions/${test.prediction.id}`, {
-    //         method: "PATCH",
-    //         headers: { "Content-Type" : "application/json"},
-    //         body: (JSON.stringify({
-    //             winner: winner,
-    //             reason: reason
-                
-    //         })),
-    //     })
-    //     .then( r => r.json())
-    //     .then( data => editPrediction(data, showForm))
-    // }
 
     return (
         <div>
 
-            {console.log(order)}
-
             <h2>{order.customer}</h2>
             <h2>{order.address}</h2>
+
+            
+             { 
+            order.order_items ? order.order_items.map((oi) => {
+                // console.log(oi)
+                return (
+                    <h1>this is the item card</h1>
+                    // <ItemCard test={oi} />
+                )
+            }) : null 
+            }
             
 
             <label>Total:</label>

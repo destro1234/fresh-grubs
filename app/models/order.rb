@@ -6,5 +6,7 @@ class Order < ApplicationRecord
     validates :address, presence: true
     validates :customer, presence: true
     validates :total, presence: true
+
+    
     
 end

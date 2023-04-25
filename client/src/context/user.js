@@ -13,6 +13,8 @@ function UserProvider({ children }) {
 
   const [currentUser, setCurrentUser ] = useState(null)
   const [errors, setErrors] = useState([])
+  const [currentOrder, setCurrentOrder] = useState({})
+  const [newOrderItems, setNewOrderItems] = useState([])
 
     useEffect(() => {
       fetch("/me").then((response) => {
@@ -28,7 +30,7 @@ function UserProvider({ children }) {
 
 
 
-    return <UserContext.Provider value={{currentUser, setCurrentUser, errors, setErrors}}>{children}</UserContext.Provider>;
+    return <UserContext.Provider value={{currentUser, setCurrentUser, errors, setErrors, currentOrder, setCurrentOrder, newOrderItems, setNewOrderItems }}>{children}</UserContext.Provider>;
   }
 
   export { UserContext, UserProvider };

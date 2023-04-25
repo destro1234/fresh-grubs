@@ -12,9 +12,12 @@ Rails.application.routes.draw do
   get "*path", to: "fallback#index", constraints: ->(req) { !req.xhr? && req.format.html? }
 
   resources :users do
-    resources :orders
+    resources :orders do
+      resources :order_items
+    end
   end
   resources :items
+  resources :order_items
   
 
 

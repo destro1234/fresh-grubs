@@ -9,6 +9,7 @@ import OrdersLog from './components/OrdersLog.js'
 function App() {
 
   const {currentUser, setCurrentUser } = useContext(UserContext)
+
  
 
     function logOut() {
@@ -37,7 +38,7 @@ function App() {
 
             
 
-      {currentUser.orders ? <OrdersLog /> : null }
+      {currentUser.orders ? <OrdersLog/> : null }
 
       
       <button onClick={logOut}>LogOut</button>

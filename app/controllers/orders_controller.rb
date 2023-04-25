@@ -13,22 +13,22 @@ class OrdersController < ApplicationController
                 orders = Order.all
             end
             
-            render json: orders, include: [:user, :items]
+            render json: orders
         end
     
         def create
             order = Order.create!(order_params)
-            render json: order, include: :items
+            
+            render json: order, include: order_items
         rescue ActiveRecord::RecordInvalid => e
             render json: { errors: e.record.errors.full_messages }, status: :unprocessable_entity
         end
     
         def show
-            user = User.find(session[:user_id])
-    
+            user = User.find(params[:user_id])
             order = Order.find(params[:id])
             if order.user == user
-            render json: order, include: :items
+            render json: order, include: order_items
             end
         end
     
@@ -45,19 +45,15 @@ class OrdersController < ApplicationController
         def update
             user = User.find(session[:user_id])
     
-    
             order = Order.find_by(id: params[:id])
             order.update(order_params) if order.user == user
-            render json: order
+            render json: order, include: order_items
         end
-        
-    
-        private 
     
         private
     
         def order_params
-            params.permit(:address, :customer, :total, :user_id, :items)
+            params.permit(:id, :address, :customer, :total, :user_id, :order, :order_items[:order_id, :item_id, :quantity], :user)
         end
     
         def record_not_found(exception)

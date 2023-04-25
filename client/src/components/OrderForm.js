@@ -1,13 +1,15 @@
-import React, { useContext, useState } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import {UserContext} from '../context/user.js'
 
-function OrderFrom ({addOrder}) {
+function OrderForm ({ addOrder }) {
 
     const [address, setAddress] = useState(null)
     const [customer, setCustomer] = useState(null)
+    const [orderTotal, setOrderTotal ] = useState(0)
     const { errors, setErrors } = useContext(UserContext)
     const {currentUser, setCurrentUser} = useContext(UserContext)
-
+    const {currentOrder, setCurrentOrder} = useContext(UserContext)
+    const { newOrderItems, setNewOrderItems } = useContext(UserContext)
 
     function handleAddressChange(event) {
         setAddress(event.target.value)
@@ -17,27 +19,27 @@ function OrderFrom ({addOrder}) {
         setCustomer(event.target.value)
       }
 
-
-    async function handleNewOrder(event) {
+      async function handleNewOrder(event) {
         
         event.preventDefault()
 
         const response = await fetch(`users/${currentUser.id}/orders`, {
             method: "POST",
             headers: {"Content-Type" : "application/json"},
-            body: JSON.stringify({address: address, customer: customer, total: 0, user_id: currentUser.id})
+            body: JSON.stringify({address: address, customer: customer, total: orderTotal, user_id: currentUser.id, order_items: newOrderItems})
         })
          const data = await response.json();
         
             
             if (response.ok) {
-               
+                
                 addOrder(data)
                 // setClicked(!clicked)
                 
             }
 
             else {
+                console.log(data)
                 setErrors(data.errors)
             }
             
@@ -45,11 +47,80 @@ function OrderFrom ({addOrder}) {
         
     }
 
+    function handleAddQuantity(index) {
+        // Get a copy of the newOrderItems array
+        const newOrderItemsCopy = [...newOrderItems];
+        // Increment the quantity of the selected item
+        newOrderItemsCopy[index].quantity++;
+        // Update the state with the new array
+        
+        setNewOrderItems(newOrderItemsCopy);
+
+      }
+
+   
+    
+    function handleRemoveQuantity(index) {
+        // Get a copy of the newOrderItems array
+        const newOrderItemsCopy = [...newOrderItems];
+        // Increment the quantity of the selected item
+        if (newOrderItemsCopy[index].quantity > 0) {
+            newOrderItemsCopy[index].quantity--;
+          } else {
+            return;
+          }
+        
+        // Update the state with the new array
+        
+        setNewOrderItems(newOrderItemsCopy);
+
+      }
+
+      useEffect(() => {
+          const orderPrice = newOrderItems.reduce((total, oi) => {
+            if (oi) {
+              const itemTotalPrice = oi.price * oi.quantity;
+              return total + itemTotalPrice;
+            }
+            return total;
+          }, 0);
+          setOrderTotal(orderPrice);
+      }, [newOrderItems]);
+
 
     return (
         <div>
+         
+         <h3> This is your order: </h3>
+         
+
+            { newOrderItems.map((oi, index) => {
+                if (oi) {
+                    const itemTotalPrice = oi.price * oi.quantity; // Calculate total price for this item
+
+                    return (
+                        <ul key={index}>
+                        <li>
+                            <div>{oi.name} - ${oi.price}</div>
+                            <div></div>
+                            <div>Quantity: {oi.quantity} </div><button onClick={()=>handleAddQuantity(index)}>Add item</button><button onClick={()=>handleRemoveQuantity(index)}>Remove item</button>
+                            <div>Total Price: ${itemTotalPrice}</div>
+
+                            
+                            </li>
+                        
+                        </ul>
+                    ) 
+                }
+                
+                
+            })}
+
+            <div>Order Total: ${orderTotal}</div>
+
+
+
             <form>
-            <h3> New Order: </h3>
             <label>Address: </label>
             <br></br>
             <input onChange={handleAddressChange} type="text" placeholder="Address"></input>
@@ -58,6 +129,7 @@ function OrderFrom ({addOrder}) {
             <br></br>
             <input onChange={handleCustomerChange} type="text" placeholder="customer"></input>
   
+            {console.log(errors)}
             {errors.length > 0 && (
               <ul style={{ color: "red" }}>
                   {errors.map((error) => (
@@ -71,4 +143,4 @@ function OrderFrom ({addOrder}) {
     )
     }
 
-export default OrderFrom;
+export default OrderForm;

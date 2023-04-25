@@ -7,10 +7,11 @@ import {UserContext} from '../context/user.js'
 function Menu () {
 
     const [items, setItems] = useState([])
-    const [address, setAddress] = useState(null)
-    const [customer, setCustomer] = useState(null)
     const { currentUser, setCurrentUser } = useContext(UserContext)
+    const {currentOrder, setCurrentOrder} = useContext(UserContext)
+    const {newOrderItems, setNewOrderItems} = useContext(UserContext)
     const [clicked, setClicked] = useState(false)
+    const {errors, setErrors } = useState({})
 
     useEffect(() => {
         fetch('/items')
@@ -18,31 +19,79 @@ function Menu () {
         .then( data => setItems(data))
     }, [])
 
-
-    function viewOrder(event) {
-        
-
-    }
-
     function handleClick () {
         setClicked(!clicked)
+
       }
       
       function addOrder (order) {
         
         let newUser = {...currentUser}
-    //     // let newTest = {winner: prediction.winner, reason: prediction.reason, game_description: `${prediction.game.home_team} vs. ${prediction.game.away_team}`, prediction: prediction}
        if (currentUser.orders) {
         newUser.orders = [...currentUser.orders, order]
-    //     // newUser.test = [...currentUser.test, newTest]
        }
 
        else {
             newUser.orders = [order]
-    //         // newUser.test = [newTest]
        }
        setCurrentUser(newUser)         
     }
+
+    function addOrderItem(order_item) {
+        console.log(order_item)
+        // let newUser = {...currentUser}
+        // let newOrder = {...currentOrder}
+        // if (currentOrder.order_items) {
+        //     newOrder.order_items = [...currentOrder.order_items, order_item ]
+        //     newUser.orders = [...currentUser.orders, newOrder]
+
+        // }
+
+        // else {
+        //     newOrder.order_items = [order_item]
+        //     newUser.orders = [newOrder]
+        // }
+        // setCurrentUser(newUser)
+    }
+
+    function handleAddItem (event, item_id) {
+        
+        if (clicked) {
+            let item = items.find( i => i.id === item_id) 
+            let newOrderItem = {name: item.name, price: item.price, item_id: item_id, quantity: 1}
+            console.log(newOrderItem)
+
+            
+            
+            setNewOrderItems([...newOrderItems, newOrderItem])
+        }
+
+       
+    
+        // console.log(newOrderItems)
+    }
+
+    // async function handleAddItem(event, item_id) {
+
+    //     const response = await fetch(`/order_items`, {
+    //         method: "POST",
+    //         headers: {"Content-Type" : "application/json"},
+    //         body: JSON.stringify({order_id: currentOrder.id, item_id: item_id, quantity: 2})
+    //     })
+    //      const data = await response.json();
+        
+            
+    //         if (response.ok) {
+    //             addOrderItem(data)
+    //         }
+
+    //         else {
+    //             setErrors(data.errors)
+    //         }
+            
+        
+        
+    // }
 
     
 
@@ -58,7 +107,7 @@ function Menu () {
                { items.map((item) => {
                 return (
                     <React.Fragment><li>{item.name} - ${item.price} </li>
-                    <button>Add to order</button>
+                    <button onClick={(event) => handleAddItem(event, item.id )}>Add to order</button>
                     </React.Fragment>
                 
                 )
@@ -68,9 +117,7 @@ function Menu () {
 
             <button onClick={handleClick}>Start new order!</button>
 
-            <button>View current order!</button>
-
-            { clicked ?  <OrderForm addOrder={addOrder} /> : null}
+            { clicked ?  <OrderForm addOrder={addOrder} newOrderItems={newOrderItems} /> : null}
         </div>
     )
 }

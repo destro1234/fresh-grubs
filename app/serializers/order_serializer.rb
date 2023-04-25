@@ -1,15 +1,18 @@
 class OrderSerializer < ActiveModel::Serializer
-  attributes :address, :customer, :total, :user, :items, :test
+   attributes :id, :address, :customer, :order_items
 
-  def test
-    object.items.collect {|i| {
-        name: i.name,
-        price: i.price,
-        # game_description: "#{p.game.home_team} vs. #{p.game.away_team}",
-        # prediction: p
-
+   def test
+    object.order_items.collect {|oi| {
+        order: oi.order_id,
+        item: oi.item_id,
+        quantity: oi.quantity
       }
   
   }
   end
+
+  
+
+
 end
+

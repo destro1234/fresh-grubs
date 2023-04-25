@@ -24,7 +24,6 @@ function EditOrderForm({order, editOrder}) {
     }
 
     function handleUpdate (event) {
-        console.log(event)
         event.preventDefault()
 
                 fetch(`users/${currentUser.id}/orders/${order.id}`, {
