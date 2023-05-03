@@ -1,7 +1,6 @@
 import React from 'react'
 
 function ItemCard ({test}) {
-    console.log(test.item.name)
     return (
         <div>
             Im the item Card

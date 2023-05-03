@@ -5,6 +5,7 @@ import {UserContext} from '../context/user.js'
 function EditOrderForm({order, editOrder}) {
 
     const {currentUser, setCurrentUser} = useContext(UserContext)
+    const {newOrderItems, setNewOrderItems} = useContext(UserContext)
 
     const [address, setAddress] = useState([])
     const [customer, setCustomer] = useState("")
@@ -22,6 +23,21 @@ function EditOrderForm({order, editOrder}) {
     function changeTotal (event) {
         setTotal(event.target.value)
     }
+    function handleAddQuantity(index) {
+        const newOrderItemsCopy = [...newOrderItems];
+        newOrderItemsCopy[index].quantity++;
+        setNewOrderItems(newOrderItemsCopy);
+
+      }
+      function handleRemoveQuantity(index) {
+        const newOrderItemsCopy = [...newOrderItems];
+        if (newOrderItemsCopy[index].quantity > 1) {
+          newOrderItemsCopy[index].quantity--;
+        } else {
+          newOrderItemsCopy.splice(index, 1); // remove item from array
+        }
+        setNewOrderItems(newOrderItemsCopy);
+      }
 
     function handleUpdate (event) {
         event.preventDefault()
@@ -43,6 +59,31 @@ function EditOrderForm({order, editOrder}) {
 
     return (
         <div>
+         
+         <h3> This is your order: </h3>
+         
+
+            { newOrderItems.map((oi, index) => {
+                if (oi) {
+                    const itemTotalPrice = oi.price * oi.quantity;
+
+                    return (
+                        <ul key={index}>
+                        <li>
+                            <div>{oi.name} - ${oi.price}</div>
+                            <div></div>
+                            <div>Quantity: {oi.quantity} </div><button onClick={()=>handleAddQuantity(index)}>Add item</button><button onClick={()=>handleRemoveQuantity(index)}>Remove item</button>
+                            <div>Total Price: ${itemTotalPrice}</div>
+
+                            
+                            </li>
+                        
+                        </ul>
+                    ) 
+                }
+                
+                
+            })}
             <form>
             <h3>Edit your order</h3>
             <label>Change Address: </label>

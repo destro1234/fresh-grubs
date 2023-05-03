@@ -1,22 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter} from "react-router-dom"
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { UserProvider } from "./context/user.js";
+import AppRouter from './App'
 
 
 
 ReactDOM.render(
-  // <React.StrictMode>
   <UserProvider>
-    <App />
-  
 
-    </UserProvider>
-  // </React.StrictMode>
-  ,
-
+    <AppRouter />
+  </UserProvider>,
 
   document.getElementById('root')
 );

@@ -9,8 +9,7 @@ Rails.application.routes.draw do
   get 'users/show'
   # Routing logic: fallback requests for React Router.
   # Leave this here to help deploy your app later!
-  get "*path", to: "fallback#index", constraints: ->(req) { !req.xhr? && req.format.html? }
-
+resources :orders
   resources :users do
     resources :orders do
       resources :order_items
@@ -19,9 +18,10 @@ Rails.application.routes.draw do
   resources :items
   resources :order_items
   
-
-
   post "/login", to: "sessions#create"
   get "/me", to: "users#show"
-  delete '/logout', to: "sessions#delete"
+  delete '/logout', to: "sessions#destroy"
+
+    get "*path", to: "fallback#index", constraints: ->(req) { !req.xhr? && req.format.html? }
+
 end

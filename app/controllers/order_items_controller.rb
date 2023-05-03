@@ -1,28 +1,33 @@
 class OrderItemsController < ApplicationController
 
     def index
+        user = User.find(session[:user_id])
+
         if params[:order_id]
-            order = Order.find_by(id: params[:order_id])
-            item = Item.find_by(id: params[:item_id])
+            order = user.orders.find_by(id: params[:order_id])
+            order_items = order&.order_items || []
             order_items = order.order_items
         else
             order_items = OrderItem.all
         end
-        
-        render json: order_items, include: [:order, :item]
+        binding.pry
+        render json: order_items
     end
 
     def show
         user = User.find(session[:user_id])
-
-        order_item= OrderItem.find(params[:order_item_id])
-        if order_item.order.user == user
-        render json: order_item, include: [:order, :item]
+        order_item = user.order_items.find_by(id: params[:id])
+        if order_item
+            render json: order_item, include: [:order, :item]
+          else
+            render json: { error: 'Order item not found' }, status: :not_found
+          end
         end
-    end
 
     def create
-        order_item = OrderItem.create(order_item_params)
+        user = User.find(session[:user_id])
+
+        order_item = user.order_items.create(order_item_params)
         render json: order_item
 
     end
@@ -32,6 +37,6 @@ class OrderItemsController < ApplicationController
     private
 
     def order_item_params
-        params.permit(:order_id, :item_id, :quantity, :order_item)
+        params.permit(:name, :price, :order_id, :item_id, :quantity)
     end
 end

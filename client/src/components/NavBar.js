@@ -8,11 +8,11 @@ function NavBar() {
 
         <div className="nav nav-pills">
             
-            <NavLink style={{ marginLeft: '.5rem' }} to={"/"} >Store</NavLink>
+            <NavLink style={{ marginLeft: '.5rem' }} to={"/"} >Menu</NavLink>
             
-            <NavLink style ={{ marginLeft: '.5rem' } }to={"/closet"}>Closet</NavLink>
+            <NavLink style ={{ marginLeft: '.5rem' } }to={"/orders"}>All Orders </NavLink>
             
-            <NavLink style={{ marginLeft: '.5rem' }} to={"/flipped"}>Flipped</NavLink>
+            <NavLink style={{ marginLeft: '.5rem' }} to={"/most-popular-item"}>Most Popular Item</NavLink>
 
         </div>
         

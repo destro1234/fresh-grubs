@@ -1,9 +1,16 @@
-import React, { useState, useContext} from 'react'
+import React, { useContext } from 'react'
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Routes, Route }  from 'react-router-dom';
 import Welcome from './components/Welcome.js'
 import './App.css';
 import  {UserContext}  from './context/user.js'
 import Menu from './components/Menu.js'
 import OrdersLog from './components/OrdersLog.js'
+import Login from './components/Login.js'
+import MostPopularItem from './components/MostPopularItem.js'
+import PreviousAddress from './components/PreviousAddress.js'
+import NavBar from './components/NavBar.js'
+
 
 
 function App() {
@@ -27,30 +34,45 @@ function App() {
      
      
       if (currentUser) {
+        {console.log(currentUser)}
        
     return ( 
     
-    <React.Fragment>
+    <div>
+      <NavBar/>
       <h2>Welcome, {currentUser.username}!</h2>
       <Menu />
-
+      {/* <PreviousAddress /> */}
       
+      {/* {currentUser.orders ? <OrdersLog/> : null } */}
 
-            
-
-      {currentUser.orders ? <OrdersLog/> : null }
+      {/* some routes, login page, order page, most popular order page, or most popular item page, profile page,  */}
 
       
       <button onClick={logOut}>LogOut</button>
-      </React.Fragment>);
-  } else {
+      </div>);
+  } 
+  else {
     return (
-    <React.Fragment>
-      <Welcome />
-    </React.Fragment>
+    <div>
+      <Login />
+    </div>
     );
   }
 
 }
 
-export default App;
+function AppRouter() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/menu" element={<Menu />}/>
+        <Route path="/orders" element={<OrdersLog />} />
+        <Route path="/most-popular-item" element={<MostPopularItem />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default AppRouter;

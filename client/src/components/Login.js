@@ -36,7 +36,9 @@ function Login() {
         })
             .then( res => {
                 if(res.ok) {
-                    res.json().then(setCurrentUser)
+                  res.json().then((data) => setCurrentUser(data))
+                    
+                
                 }
             else {
                 res.json()
@@ -47,6 +49,11 @@ function Login() {
     }
   
     return (
+      <div>
+         <div>
+            <h1>Welcome to FreshGrubs!</h1>
+            <h3>Sign in with your username and password</h3>
+            </div>
       <form onSubmit={handleSubmit}>
         <label htmlFor="username">Username: </label>
         <input
@@ -59,7 +66,7 @@ function Login() {
         <label htmlFor="password">Password: </label>
 
         <input
-          type="text"
+          type="password"
           id="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -68,6 +75,7 @@ function Login() {
         <button onClick={(e) => onSignup(e)}>Signup</button>
         <button type="submit">Login</button>
       </form>
+      </div>
     );
   }
 

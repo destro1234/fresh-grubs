@@ -5,10 +5,12 @@ class OrdersController < ApplicationController
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
     
         def index
+    
             if params[:user_id]
                 user = User.find_by(id: params[:user_id])
-                
+                binding.pry
                 orders = user.orders
+                
             else
                 orders = Order.all
             end
@@ -17,18 +19,23 @@ class OrdersController < ApplicationController
         end
     
         def create
-            order = Order.create!(order_params)
+            order = Order.create!(address: params[:address], customer: params[:customer], total: params[:total], user_id: params[:user_id])
+            orderItems = params[:order_items]
+            new_order_items = orderItems.map { |item|
+            order.order_items.create(item.permit(:name, :price, :quantity, :item_id))
+          }
+        
             
-            render json: order, include: order_items
+            render json: order
         rescue ActiveRecord::RecordInvalid => e
             render json: { errors: e.record.errors.full_messages }, status: :unprocessable_entity
         end
     
         def show
-            user = User.find(params[:user_id])
+            user = User.find(session[:user_id])
             order = Order.find(params[:id])
             if order.user == user
-            render json: order, include: order_items
+            render json: order
             end
         end
     
@@ -47,13 +54,13 @@ class OrdersController < ApplicationController
     
             order = Order.find_by(id: params[:id])
             order.update(order_params) if order.user == user
-            render json: order, include: order_items
+            render json: order
         end
     
         private
     
         def order_params
-            params.permit(:id, :address, :customer, :total, :user_id, :order, :order_items[:order_id, :item_id, :quantity], :user)
+            params.permit(:id, :address, :customer, :total, :user_id, order_items: [:name, :price, :quantity, :item_id])
         end
     
         def record_not_found(exception)
